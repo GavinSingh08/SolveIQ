@@ -1,9 +1,16 @@
 'use client';
 
+import { createClient } from '@/lib/supabase/client';
+
 export default function Home() {
   const handleSignIn = async () => {
-    console.log('Signing in with GitHub...');
-    // TODO: The actual Supabase sign-in logic will go here.
+    const supabase = createClient();
+    await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
   };
 
   return (
