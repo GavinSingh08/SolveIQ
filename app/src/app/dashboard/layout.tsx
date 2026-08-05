@@ -7,6 +7,7 @@ import {
   Sparkles,
   Settings,
 } from 'lucide-react';
+import { SignOutButton } from '@/components/sign-out-button';
 
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, active: true },
@@ -53,7 +54,7 @@ export default function DashboardLayout({
 
         <div className="px-3 py-4 border-t border-gray-800 flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-gray-700" />
-          <span className="text-sm text-gray-400">Sign Out</span>
+          <SignOutButton />
         </div>
       </aside>
 
