@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { syncLeetCodeData } from '@/lib/leetcode/sync';
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -30,6 +31,12 @@ export async function GET(request: Request) {
 
       if (!profile?.leetcode_username) {
         return NextResponse.redirect(`${origin}/onboarding`);
+      }
+
+      try {
+        await syncLeetCodeData(supabase, data.user.id, profile.leetcode_username);
+      } catch (error) {
+        console.error('LeetCode sync failed:', error);
       }
     }
   }

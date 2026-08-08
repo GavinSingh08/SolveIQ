@@ -1,19 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type SubmitEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
 export default function Onboarding() {
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'verifying' | 'syncing'>(
+    'idle'
+  );
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     setError('');
-    setIsSubmitting(true);
+    setStatus('verifying');
 
     const verifyResponse = await fetch('/api/leetcode/verify', {
       method: 'POST',
@@ -24,7 +26,7 @@ export default function Onboarding() {
 
     if (!exists) {
       setError('LeetCode username not found. Please check and try again.');
-      setIsSubmitting(false);
+      setStatus('idle');
       return;
     }
 
@@ -35,13 +37,16 @@ export default function Onboarding() {
 
     if (!user) {
       setError('You must be signed in to continue.');
-      setIsSubmitting(false);
+      setStatus('idle');
       return;
     }
 
     await supabase
       .from('profiles')
       .upsert({ id: user.id, leetcode_username: username });
+
+    setStatus('syncing');
+    await fetch('/api/leetcode/sync', { method: 'POST' });
 
     router.push('/dashboard');
   };
@@ -75,10 +80,12 @@ export default function Onboarding() {
           {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={status !== 'idle'}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg mt-6"
           >
-            {isSubmitting ? 'Verifying...' : 'Continue'}
+            {status === 'idle' && 'Continue'}
+            {status === 'verifying' && 'Verifying...'}
+            {status === 'syncing' && 'Syncing your solved problems...'}
           </button>
         </form>
       </div>
