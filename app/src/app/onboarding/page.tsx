@@ -52,12 +52,12 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+    <div className="flex items-center justify-center min-h-screen bg-base text-ink">
       <div className="text-center max-w-sm w-full px-6">
         <h1 className="text-3xl font-bold mb-2">
           Connect your LeetCode account
         </h1>
-        <p className="text-gray-400 mb-8">
+        <p className="text-ink-soft mb-8">
           We use your public LeetCode stats to build your analytics and
           recommendations.
         </p>
@@ -65,7 +65,7 @@ export default function Onboarding() {
         <form onSubmit={handleSubmit} className="text-left">
           <label
             htmlFor="leetcode-username"
-            className="block text-sm text-gray-400 mb-2"
+            className="block text-sm text-ink-soft mb-2"
           >
             LeetCode Username
           </label>
@@ -75,13 +75,13 @@ export default function Onboarding() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="e.g. johndoe123"
-            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+            className="w-full bg-surface border border-line rounded-lg px-4 py-2 text-ink placeholder-ink-faint focus:outline-none focus:border-accent-500"
           />
           {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
           <button
             type="submit"
             disabled={status !== 'idle'}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg mt-6"
+            className="w-full bg-accent-600 hover:bg-accent-700 disabled:bg-accent-800 disabled:cursor-not-allowed text-ink font-bold py-3 rounded-lg mt-6"
           >
             {status === 'idle' && 'Continue'}
             {status === 'verifying' && 'Verifying...'}

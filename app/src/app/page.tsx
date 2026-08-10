@@ -14,15 +14,15 @@ export default function Home() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+    <div className="flex items-center justify-center min-h-screen bg-base text-ink">
       <div className="text-center">
-        <h1 className="text-5xl font-bold mb-4">InterviewIQ</h1>
-        <p className="text-lg text-gray-400 mb-8">
-          The smartest way to prepare for your coding interviews.
+        <h1 className="text-5xl font-bold mb-4">SolveIQ</h1>
+        <p className="text-lg text-ink-soft mb-8">
+          Track your coding practice and get better, powered by AI.
         </p>
         <button
           onClick={handleSignIn}
-          className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center w-full max-w-xs mx-auto"
+          className="bg-surface hover:bg-surface-hover text-ink font-bold py-3 px-6 rounded-lg flex items-center justify-center w-full max-w-xs mx-auto"
         >
           Sign In with GitHub
         </button>
