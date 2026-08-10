@@ -1,6 +1,7 @@
 import { BrainCircuit } from 'lucide-react';
 import { SignOutButton } from '@/components/sign-out-button';
 import { DashboardNav } from '@/components/dashboard-nav';
+import { TrackingDisclaimer } from '@/components/tracking-disclaimer';
 
 export default function DashboardLayout({
   children,
@@ -24,6 +25,8 @@ export default function DashboardLayout({
       </aside>
 
       <div className="flex-1">{children}</div>
+
+      <TrackingDisclaimer />
     </div>
   );
 }
