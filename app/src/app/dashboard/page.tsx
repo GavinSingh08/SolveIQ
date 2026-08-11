@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
+import { ActivityHeatmap } from '@/components/activity-heatmap';
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -22,7 +23,7 @@ export default async function Dashboard() {
         .single(),
       supabase
         .from('user_stats')
-        .select('easy_solved, medium_solved, hard_solved, topics')
+        .select('easy_solved, medium_solved, hard_solved, topics, calendar')
         .eq('user_id', user.id)
         .single(),
       supabase
@@ -73,8 +74,8 @@ export default async function Dashboard() {
 
       <section className="mb-4 shrink-0">
         <h2 className="text-sm font-semibold mb-2">Activity Heatmap</h2>
-        <div className="bg-surface rounded-lg border border-line h-20 flex items-center justify-center">
-          <p className="text-ink-faint text-sm">Heatmap placeholder</p>
+        <div className="bg-surface rounded-lg border border-line p-3">
+          <ActivityHeatmap calendar={(stats?.calendar as Record<string, number>) ?? {}} />
         </div>
       </section>
 

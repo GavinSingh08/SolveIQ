@@ -34,8 +34,8 @@ export function ProblemsExplorer({ problems }: { problems: Problem[] }) {
   }, [problems, search, difficulty, topic]);
 
   return (
-    <div>
-      <div className="flex flex-wrap gap-3 mb-4">
+    <div className="flex flex-col flex-1 min-h-0">
+      <div className="flex flex-wrap gap-3 mb-4 shrink-0">
         <input
           type="text"
           value={search}
@@ -67,11 +67,11 @@ export function ProblemsExplorer({ problems }: { problems: Problem[] }) {
         </select>
       </div>
 
-      <p className="text-ink-faint text-xs mb-3">
+      <p className="text-ink-faint text-xs mb-3 shrink-0">
         {filtered.length} of {problems.length} problems
       </p>
 
-      <div className="space-y-2">
+      <div className="flex-1 min-h-0 overflow-y-auto space-y-2">
         {filtered.map((problem) => (
           <div
             key={problem.slug}

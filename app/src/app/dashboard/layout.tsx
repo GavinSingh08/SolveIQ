@@ -9,7 +9,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex bg-base text-ink">
+    <div className="h-screen overflow-hidden flex bg-base text-ink">
       <aside className="w-60 shrink-0 border-r border-line flex flex-col">
         <div className="flex items-center gap-2 px-6 py-6 text-xl font-bold border-b border-line">
           <BrainCircuit size={22} className="text-accent-400" />
@@ -24,7 +24,7 @@ export default function DashboardLayout({
         </div>
       </aside>
 
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 min-h-0">{children}</div>
 
       <TrackingDisclaimer />
     </div>
