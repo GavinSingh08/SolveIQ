@@ -116,8 +116,9 @@ async function syncUserStats(
 ) {
   const currentYear = new Date().getFullYear();
 
-  const [aggregateData, progressData] = await Promise.all([
+  const [aggregateData, previousYearData, progressData] = await Promise.all([
     leetcodeRequest(AGGREGATE_QUERY, { username, year: currentYear }),
+    leetcodeRequest(AGGREGATE_QUERY, { username, year: currentYear - 1 }),
     leetcodeRequest(PROGRESS_QUERY, { userSlug: username }),
   ]);
 
@@ -132,7 +133,13 @@ async function syncUserStats(
     topics[tag.tagName] = tag.problemsSolved;
   }
 
-  const calendar = JSON.parse(aggregateData.matchedUser.userCalendar.submissionCalendar);
+  // The heatmap shows a trailing 371-day window, which can reach back into
+  // the previous calendar year (e.g. every January) — LeetCode's calendar
+  // API is scoped to a single year, so merge this year's and last year's.
+  // 371 days never reaches back two full years, so these two are enough.
+  const currentYearCalendar = JSON.parse(aggregateData.matchedUser.userCalendar.submissionCalendar);
+  const previousYearCalendar = JSON.parse(previousYearData.matchedUser.userCalendar.submissionCalendar);
+  const calendar = { ...previousYearCalendar, ...currentYearCalendar };
 
   const { error } = await supabase.from('user_stats').upsert({
     user_id: userId,
