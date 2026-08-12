@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { ActivityHeatmap } from '@/components/activity-heatmap';
+import { ProgressStat } from '@/components/progress-stat';
+import { computeWeeklyProgress } from '@/lib/progress';
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -49,6 +51,10 @@ export default async function Dashboard() {
     (stats?.topics as Record<string, number>) ?? {}
   ).sort((a, b) => b[1] - a[1]);
 
+  const weeklyProgress = computeWeeklyProgress(
+    (stats?.calendar as Record<string, number>) ?? {}
+  );
+
   return (
     <main className="h-screen px-8 py-6 max-w-7xl mx-auto flex flex-col overflow-hidden">
       <div className="shrink-0">
@@ -82,10 +88,14 @@ export default async function Dashboard() {
       <div className="grid grid-cols-3 gap-4 mb-4 flex-1 min-h-0">
         <section className="flex flex-col min-h-0">
           <h2 className="text-sm font-semibold mb-2 shrink-0">
-            Progress Over Time
+            Weekly Pace
           </h2>
-          <div className="bg-surface rounded-lg border border-line flex-1 flex items-center justify-center">
-            <p className="text-ink-faint text-sm">Progress graph placeholder</p>
+          <div className="bg-surface rounded-lg border border-line flex-1 p-4">
+            <ProgressStat
+              thisWeek={weeklyProgress.thisWeek}
+              delta={weeklyProgress.delta}
+              sparkline={weeklyProgress.sparkline}
+            />
           </div>
         </section>
         <section className="flex flex-col min-h-0">
