@@ -57,6 +57,19 @@ const PROGRESS_QUERY = `
   }
 `;
 
+// Total problems per difficulty across all of LeetCode, not scoped to any
+// user — used as the reference distribution so "difficulty breakdown" can
+// compare the user's mix against the catalog's actual mix, instead of just
+// re-showing the same solved counts the stat cards already display.
+const CATALOG_COUNTS_QUERY = `
+  query allQuestionsCount {
+    allQuestionsCount {
+      difficulty
+      count
+    }
+  }
+`;
+
 async function syncRecentProblems(
   supabase: SupabaseClient,
   userId: string,
@@ -116,10 +129,11 @@ async function syncUserStats(
 ) {
   const currentYear = new Date().getFullYear();
 
-  const [aggregateData, previousYearData, progressData] = await Promise.all([
+  const [aggregateData, previousYearData, progressData, catalogData] = await Promise.all([
     leetcodeRequest(AGGREGATE_QUERY, { username, year: currentYear }),
     leetcodeRequest(AGGREGATE_QUERY, { username, year: currentYear - 1 }),
     leetcodeRequest(PROGRESS_QUERY, { userSlug: username }),
+    leetcodeRequest(CATALOG_COUNTS_QUERY, {}),
   ]);
 
   const difficultyCounts: Record<string, number> = {};
@@ -141,6 +155,13 @@ async function syncUserStats(
   const previousYearCalendar = JSON.parse(previousYearData.matchedUser.userCalendar.submissionCalendar);
   const calendar = { ...previousYearCalendar, ...currentYearCalendar };
 
+  const catalogCounts: Record<string, number> = {};
+  for (const entry of catalogData.allQuestionsCount) {
+    if (entry.difficulty !== 'All') {
+      catalogCounts[entry.difficulty.toLowerCase()] = entry.count;
+    }
+  }
+
   const { error } = await supabase.from('user_stats').upsert({
     user_id: userId,
     easy_solved: difficultyCounts.easy ?? 0,
@@ -148,6 +169,7 @@ async function syncUserStats(
     hard_solved: difficultyCounts.hard ?? 0,
     topics,
     calendar,
+    catalog_counts: catalogCounts,
     last_synced_at: new Date().toISOString(),
   });
 

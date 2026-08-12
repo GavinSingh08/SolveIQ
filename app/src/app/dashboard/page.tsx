@@ -4,6 +4,8 @@ import { Flame } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ActivityHeatmap } from '@/components/activity-heatmap';
 import { ProgressStat } from '@/components/progress-stat';
+import { DifficultyBreakdown } from '@/components/difficulty-breakdown';
+import { InfoTooltip } from '@/components/info-tooltip';
 import { computeWeeklyProgress } from '@/lib/progress';
 import { computeStreak } from '@/lib/streak';
 
@@ -27,7 +29,7 @@ export default async function Dashboard() {
         .single(),
       supabase
         .from('user_stats')
-        .select('easy_solved, medium_solved, hard_solved, topics, calendar')
+        .select('easy_solved, medium_solved, hard_solved, topics, calendar, catalog_counts')
         .eq('user_id', user.id)
         .single(),
       supabase
@@ -58,6 +60,12 @@ export default async function Dashboard() {
   );
 
   const streak = computeStreak((stats?.calendar as Record<string, number>) ?? {});
+
+  const catalogCounts = (stats?.catalog_counts as { easy: number; medium: number; hard: number } | null) ?? {
+    easy: 0,
+    medium: 0,
+    hard: 0,
+  };
 
   return (
     <main className="h-screen px-8 py-6 max-w-7xl mx-auto flex flex-col overflow-hidden">
@@ -115,11 +123,15 @@ export default async function Dashboard() {
           </div>
         </section>
         <section className="flex flex-col min-h-0">
-          <h2 className="text-sm font-semibold mb-2 shrink-0">
+          <h2 className="text-sm font-semibold mb-2 shrink-0 flex items-center gap-1.5">
             Difficulty Breakdown
+            <InfoTooltip text="Your difficulty mix vs. LeetCode's overall difficulty mix." />
           </h2>
-          <div className="bg-surface rounded-lg border border-line flex-1 flex items-center justify-center">
-            <p className="text-ink-faint text-sm">Chart placeholder</p>
+          <div className="bg-surface rounded-lg border border-line flex-1 p-4">
+            <DifficultyBreakdown
+              yours={{ easy: easySolved, medium: mediumSolved, hard: hardSolved }}
+              catalog={catalogCounts}
+            />
           </div>
         </section>
         <section className="flex flex-col min-h-0">
