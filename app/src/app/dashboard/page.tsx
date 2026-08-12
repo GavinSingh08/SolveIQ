@@ -1,9 +1,11 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { Flame } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { ActivityHeatmap } from '@/components/activity-heatmap';
 import { ProgressStat } from '@/components/progress-stat';
 import { computeWeeklyProgress } from '@/lib/progress';
+import { computeStreak } from '@/lib/streak';
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -55,12 +57,26 @@ export default async function Dashboard() {
     (stats?.calendar as Record<string, number>) ?? {}
   );
 
+  const streak = computeStreak((stats?.calendar as Record<string, number>) ?? {});
+
   return (
     <main className="h-screen px-8 py-6 max-w-7xl mx-auto flex flex-col overflow-hidden">
       <div className="shrink-0">
-        <h1 className="text-2xl font-bold mb-1">
-          Welcome back, {profile?.leetcode_username}
-        </h1>
+        <div className="flex items-center gap-2 mb-1">
+          <h1 className="text-2xl font-bold">
+            Welcome back, {profile?.leetcode_username}
+          </h1>
+          <span
+            className={`inline-flex items-center gap-1.5 text-xs rounded-lg px-2.5 py-1 border ${
+              streak > 0
+                ? 'bg-accent-400/10 text-accent-400 border-accent-400/30'
+                : 'bg-surface text-ink-faint border-line'
+            }`}
+          >
+            <Flame size={14} className={streak > 0 ? 'fill-accent-400' : ''} />
+            {streak}-day streak
+          </span>
+        </div>
         <p className="text-ink-soft text-sm mb-4">
           Here&apos;s your coding progress so far.
         </p>
