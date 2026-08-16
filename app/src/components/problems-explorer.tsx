@@ -12,10 +12,16 @@ type Problem = {
 
 const DIFFICULTIES = ['All', 'Easy', 'Medium', 'Hard'];
 
-export function ProblemsExplorer({ problems }: { problems: Problem[] }) {
+export function ProblemsExplorer({
+  problems,
+  initialTopic,
+}: {
+  problems: Problem[];
+  initialTopic?: string;
+}) {
   const [search, setSearch] = useState('');
   const [difficulty, setDifficulty] = useState('All');
-  const [topic, setTopic] = useState('All');
+  const [topic, setTopic] = useState(initialTopic ?? 'All');
 
   const topics = useMemo(() => {
     const set = new Set<string>();

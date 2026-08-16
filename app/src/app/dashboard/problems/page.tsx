@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { ProblemsExplorer } from '@/components/problems-explorer';
 
-export default async function ProblemsPage() {
+export default async function ProblemsPage({
+  searchParams,
+}: PageProps<'/dashboard/problems'>) {
   const supabase = await createClient();
 
   const {
@@ -13,6 +15,8 @@ export default async function ProblemsPage() {
   if (!user) {
     redirect('/');
   }
+
+  const { topic } = await searchParams;
 
   const { data: problems } = await supabase
     .from('recent_problems')
@@ -35,7 +39,10 @@ export default async function ProblemsPage() {
         </p>
       </div>
 
-      <ProblemsExplorer problems={problems ?? []} />
+      <ProblemsExplorer
+        problems={problems ?? []}
+        initialTopic={typeof topic === 'string' ? topic : undefined}
+      />
     </main>
   );
 }

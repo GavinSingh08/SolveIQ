@@ -136,7 +136,7 @@ export default async function Dashboard() {
         </section>
         <section className="flex flex-col min-h-0">
           <h2 className="text-sm font-semibold mb-2 shrink-0">Topics</h2>
-          <div className="bg-surface rounded-lg border border-line flex-1 overflow-y-auto p-3 space-y-2">
+          <div className="bg-surface rounded-lg border border-line flex-1 min-h-0 overflow-y-auto p-3 space-y-2">
             {topicEntries.map(([topic, count]) => (
               <div
                 key={topic}
@@ -150,6 +150,12 @@ export default async function Dashboard() {
               <p className="text-ink-faint text-sm">No topic data yet.</p>
             )}
           </div>
+          <Link
+            href="/dashboard/topics"
+            className="inline-block self-start mt-2 text-xs text-accent-400 border border-accent-400/40 rounded-lg px-3 py-1.5 hover:bg-accent-400/10 transition-colors shrink-0"
+          >
+            View All Topics &rarr;
+          </Link>
         </section>
       </div>
 
