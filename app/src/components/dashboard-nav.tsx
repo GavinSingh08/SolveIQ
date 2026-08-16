@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
+  ListChecks,
   BarChart3,
   BookOpen,
   Target,
@@ -21,6 +22,7 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
+  { label: 'Problems', icon: ListChecks, href: '/dashboard/problems' },
   { label: 'Analytics', icon: BarChart3 },
   { label: 'Topics', icon: BookOpen },
   { label: 'Recommendations', icon: Target },
