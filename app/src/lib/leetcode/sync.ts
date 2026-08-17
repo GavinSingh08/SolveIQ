@@ -37,6 +37,9 @@ const QUESTION_QUERY = `
 const AGGREGATE_QUERY = `
   query userAggregateStats($username: String!, $year: Int) {
     matchedUser(username: $username) {
+      profile {
+        userAvatar
+      }
       tagProblemCounts {
         advanced { tagName problemsSolved }
         intermediate { tagName problemsSolved }
@@ -175,6 +178,15 @@ async function syncUserStats(
 
   if (error) {
     console.error('user_stats upsert failed:', error);
+  }
+
+  const { error: profileError } = await supabase
+    .from('profiles')
+    .update({ avatar_url: aggregateData.matchedUser.profile.userAvatar })
+    .eq('id', userId);
+
+  if (profileError) {
+    console.error('profiles avatar update failed:', profileError);
   }
 }
 
