@@ -4,13 +4,13 @@ import { useLayoutEffect, useState } from 'react';
 import { themes, THEME_STORAGE_KEY, type ThemeId } from '@/lib/themes';
 
 export function ThemeSwitcher() {
-  const [active, setActive] = useState<ThemeId>('slate');
+  const [active, setActive] = useState<ThemeId>('onyx');
 
   useLayoutEffect(() => {
     // Re-applies the inline script's choice after React Strict Mode's dev-only
     // remount clears attributes it doesn't own. No-op in production.
     const stored = localStorage.getItem(THEME_STORAGE_KEY) as ThemeId | null;
-    const theme = stored ?? 'slate';
+    const theme = stored ?? 'onyx';
     document.documentElement.setAttribute('data-theme', theme);
     setActive(theme);
   }, []);
@@ -34,7 +34,7 @@ export function ThemeSwitcher() {
           }`}
         >
           <span
-            className="w-4 h-4 rounded-full shrink-0"
+            className="w-4 h-4 rounded-full shrink-0 border border-line"
             style={{ backgroundColor: theme.swatch }}
           />
           {theme.label}

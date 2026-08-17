@@ -1,6 +1,24 @@
 @import "tailwindcss";
 
 :root {
+  /* Onyx (default): purely neutral black/gray, no hue tint anywhere,
+     unlike Slate's blue-gray accent. */
+  --base: #0a0a0a;
+  --surface: #161616;
+  --surface-hover: #212121;
+  --line: #2a2a2a;
+  --ink: #f5f5f5;
+  --ink-soft: #a8a8a8;
+  --ink-faint: #727272;
+
+  --accent-400: #cfcfcf;
+  --accent-500: #b0b0b0;
+  --accent-600: #8f8f8f;
+  --accent-700: #707070;
+  --accent-800: #525252;
+}
+
+[data-theme='slate'] {
   --base: #121212;
   --surface: #1c1c1c;
   --surface-hover: #282828;
@@ -14,22 +32,6 @@
   --accent-600: #66788f;
   --accent-700: #536176;
   --accent-800: #414c5c;
-}
-
-[data-theme='nebula'] {
-  --base: #131218;
-  --surface: #1c1a22;
-  --surface-hover: #27242e;
-  --line: #322e3a;
-  --ink: #eceaf0;
-  --ink-soft: #a39dae;
-  --ink-faint: #6b6575;
-
-  --accent-400: #a08fc2;
-  --accent-500: #8a76ae;
-  --accent-600: #766293;
-  --accent-700: #625179;
-  --accent-800: #4d4060;
 }
 
 [data-theme='forest'] {
@@ -78,6 +80,25 @@
   --accent-600: #8f7143;
   --accent-700: #745c37;
   --accent-800: #543f26;
+}
+
+[data-theme='snow'] {
+  --base: #f6f6f7;
+  --surface: #ffffff;
+  --surface-hover: #ececee;
+  --line: #e0e0e3;
+  --ink: #18181b;
+  --ink-soft: #65656b;
+  --ink-faint: #9c9ca2;
+
+  /* Light base, so "prominent" runs dark-to-light instead of the
+     light-to-dark direction every other (dark) theme uses — the token
+     names stay the same, only which end of the ramp is "bold" flips. */
+  --accent-400: #27272a;
+  --accent-500: #3f3f46;
+  --accent-600: #52525b;
+  --accent-700: #71717a;
+  --accent-800: #a1a1aa;
 }
 
 @theme inline {
