@@ -135,7 +135,7 @@ function TopicRow({
               href={`/dashboard/problems?topic=${encodeURIComponent(topic)}`}
               className="inline-block text-xs text-accent-400 hover:opacity-80"
             >
-              View all in Problems &rarr;
+              View All in Problems &rarr;
             </Link>
           </div>
         </div>
