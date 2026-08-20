@@ -7,7 +7,6 @@ import {
   ListChecks,
   BarChart3,
   BookOpen,
-  Target,
   Sparkles,
   Settings,
   type LucideIcon,
@@ -25,8 +24,7 @@ const navItems: NavItem[] = [
   { label: 'Problems', icon: ListChecks, href: '/dashboard/problems' },
   { label: 'Topics', icon: BookOpen, href: '/dashboard/topics' },
   { label: 'Analytics', icon: BarChart3, href: '/dashboard/analytics' },
-  { label: 'Recommendations', icon: Target },
-  { label: 'AI Coach', icon: Sparkles, badge: 'Soon' },
+  { label: 'AI Coach', icon: Sparkles, href: '/dashboard/ai-coach' },
   { label: 'Settings', icon: Settings, href: '/dashboard/settings' },
 ];
 
